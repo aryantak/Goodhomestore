@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Diwali Lighting Redesign</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --night: #07090f;
+      --night-2: #101624;
+      --ink: #e8e2d4;
+      --muted: #a39b8c;
+      --gold: #e0b35a;
+      --amber: #c97a2a;
+      --warm-white: #fff1cf;
+      --marigold: #f0a03a;
+      --deep-blue-old: #1a4cff;
+      --soft-blue-old: #3d7bff;
+      --line: rgba(232, 226, 212, 0.12);
+      --font-display: "Cormorant Garamond", Georgia, serif;
+      --font-body: "Sora", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      line-height: 1.55;
+      overflow-x: hidden;
+      background:
+        radial-gradient(ellipse 80% 50% at 70% 0%, rgba(224, 179, 90, 0.08), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 15% 80%, rgba(201, 122, 42, 0.06), transparent 50%),
+        linear-gradient(180deg, #05070c 0%, #0c111c 45%, #080a10 100%);
+    }
+
+    main { position: relative; }
+
+    /* —— Hero —— */
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .hero-visual {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      filter: saturate(0.95) brightness(0.72);
+      animation: heroReveal 1.6s ease-out both;
+    }
+
+    .hero-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(7, 9, 15, 0.35) 0%, rgba(7, 9, 15, 0.15) 35%, rgba(7, 9, 15, 0.85) 78%, rgba(7, 9, 15, 0.98) 100%),
+        linear-gradient(90deg, rgba(7, 9, 15, 0.55) 0%, transparent 40%);
+    }
+
+    .hero-content {
+      align-self: end;
+      padding: clamp(1.5rem, 5vw, 4rem);
+      max-width: 42rem;
+      animation: riseIn 1.1s 0.25s ease-out both;
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-size: clamp(2.75rem, 8vw, 5.5rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 0.95;
+      color: var(--warm-white);
+      text-shadow: 0 0 40px rgba(224, 179, 90, 0.25);
+    }
+
+    .brand em {
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .hero h1 {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      color: var(--ink);
+      margin-top: 1.25rem;
+      max-width: 28rem;
+      letter-spacing: 0.01em;
+    }
+
+    .hero p {
+      margin-top: 0.65rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 26rem;
+      font-weight: 300;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.75rem;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.9rem 1.35rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--gold);
+      color: #1a1205;
+    }
+    .btn-primary:hover { background: var(--warm-white); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* —— Sections —— */
+    section {
+      padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.25rem, 5vw, 4rem);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--warm-white);
+      max-width: 18ch;
+    }
+
+    .section-lead {
+      margin-top: 1rem;
+      color: var(--muted);
+      max-width: 38rem;
+      font-weight: 300;
+      font-size: 1rem;
+    }
+
+    /* —— Diagnosis —— */
+    .diagnosis {
+      display: grid;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+    }
+
+    @media (min-width: 800px) {
+      .diagnosis {
+        grid-template-columns: 1.1fr 1fr;
+        align-items: start;
+      }
+    }
+
+    .photo-frame {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      background: var(--night-2);
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-caption {
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    .findings {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding-top: 0.25rem;
+    }
+
+    .finding {
+      border-top: 1px solid var(--line);
+      padding-top: 1.15rem;
+      animation: riseIn 0.8s ease-out both;
+    }
+    .finding:nth-child(1) { animation-delay: 0.05s; }
+    .finding:nth-child(2) { animation-delay: 0.15s; }
+    .finding:nth-child(3) { animation-delay: 0.25s; }
+    .finding:nth-child(4) { animation-delay: 0.35s; }
+
+    .finding h3 {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
+    }
+
+    .finding p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 300;
+    }
+
+    /* —— Compare —— */
+    .compare-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .mode-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      margin-top: 1.25rem;
+      max-width: 420px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 20;
+    }
+
+    .mode-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(16, 22, 36, 0.85);
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 1rem 1.1rem;
+      cursor: pointer;
+      min-height: 3.25rem;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .mode-btn:hover {
+      border-color: rgba(224, 179, 90, 0.55);
+      color: var(--ink);
+    }
+
+    .mode-btn.is-active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #1a1205;
+    }
+
+    .stage {
+      position: relative;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 20%, rgba(224, 179, 90, 0.07), transparent 60%),
+        #05070d;
+      border: 1px solid var(--line);
+      min-height: 480px;
+      display: grid;
+      place-items: end center;
+      padding: 2rem 1rem 0;
+      overflow: hidden;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255, 241, 207, 0.45), transparent),
+        radial-gradient(1px 1px at 28% 8%, rgba(255, 241, 207, 0.3), transparent),
+        radial-gradient(1.5px 1.5px at 55% 12%, rgba(255, 241, 207, 0.5), transparent),
+        radial-gradient(1px 1px at 72% 22%, rgba(255, 241, 207, 0.25), transparent),
+        radial-gradient(1px 1px at 88% 10%, rgba(255, 241, 207, 0.4), transparent),
+        radial-gradient(1px 1px at 40% 28%, rgba(255, 241, 207, 0.2), transparent);
+      opacity: 0.7;
+      pointer-events: none;
+      animation: starDrift 18s linear infinite;
+    }
+
+    .facade {
+      width: min(420px, 92%);
+      aspect-ratio: 3 / 4.2;
+      position: relative;
+      z-index: 1;
+      transition: filter 0.6s ease;
+    }
+
+    .facade svg { width: 100%; height: 100%; display: block; }
+
+    /* Lighting layers controlled by data-mode */
+    .stage[data-mode="current"] .layer-warm { opacity: 0.15; }
+    .stage[data-mode="current"] .layer-blue { opacity: 1; }
+    .stage[data-mode="current"] .layer-accent-warm { opacity: 0.55; }
+    .stage[data-mode="current"] .layer-diya { opacity: 0.35; }
+    .stage[data-mode="current"] .glow-warm { opacity: 0; }
+
+    .stage[data-mode="redesign"] .layer-warm { opacity: 1; }
+    .stage[data-mode="redesign"] .layer-blue { opacity: 0; }
+    .stage[data-mode="redesign"] .layer-accent-warm { opacity: 1; }
+    .stage[data-mode="redesign"] .layer-diya { opacity: 1; }
+    .stage[data-mode="redesign"] .glow-warm { opacity: 1; }
+
+    .layer-blue,
+    .layer-warm,
+    .layer-accent-warm,
+    .layer-diya,
+    .glow-warm {
+      transition: opacity 0.7s ease;
+    }
+
+    .curtain-blue {
+      animation: curtainPulseBlue 2.8s ease-in-out infinite;
+    }
+
+    .curtain-warm {
+      animation: curtainPulseWarm 3.4s ease-in-out infinite;
+    }
+
+    .diya-flame {
+      transform-origin: center bottom;
+      animation: flameFlicker 1.4s ease-in-out infinite;
+    }
+
+    .star-sconce {
+      animation: sconceGlow 2.2s ease-in-out infinite;
+    }
+
+    .mode-note {
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 300;
+      min-height: 2.8em;
+      transition: opacity 0.3s ease;
+    }
+
+    /* —— Zones —— */
+    .zones {
+      display: grid;
+      gap: 0;
+      margin-top: 2.5rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .zone {
+      display: grid;
+      gap: 0.75rem 2rem;
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+    }
+
+    @media (min-width: 720px) {
+      .zone {
+        grid-template-columns: 7rem 1fr 11rem;
+      }
+    }
+
+    .zone-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--gold);
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .zone h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .zone p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 300;
+    }
+
+    .zone-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      font-weight: 500;
+      padding-top: 0.35rem;
+    }
+
+    /* —— Palette —— */
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 2.25rem;
+    }
+
+    .swatch {
+      padding: 1.25rem 1rem 1rem;
+      border: 1px solid var(--line);
+      background: rgba(16, 22, 36, 0.5);
+      transition: border-color 0.3s ease;
+    }
+
+    .swatch:hover { border-color: rgba(224, 179, 90, 0.45); }
+
+    .swatch-chip {
+      height: 3.25rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .swatch h4 {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .swatch p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* —— Shopping —— */
+    .kit {
+      margin-top: 2.25rem;
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .kit-row {
+      display: grid;
+      gap: 0.35rem 1.5rem;
+      padding: 1.15rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    @media (min-width: 700px) {
+      .kit-row {
+        grid-template-columns: 1.4fr 2fr 5.5rem;
+        align-items: baseline;
+      }
+    }
+
+    .kit-row h3 {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .kit-row p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .kit-qty {
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* —— Sequence —— */
+    .steps {
+      counter-reset: step;
+      margin-top: 2.25rem;
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 800px) {
+      .steps { grid-template-columns: 1fr 1fr; gap: 1.5rem 2.5rem; }
+    }
+
+    .step {
+      counter-increment: step;
+      padding-left: 3rem;
+      position: relative;
+    }
+
+    .step::before {
+      content: counter(step, decimal-leading-zero);
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .step h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 300;
+    }
+
+    /* —— Footer —— */
+    footer {
+      padding: 3rem clamp(1.25rem, 5vw, 4rem) 4rem;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 300;
+    }
+
+    footer strong {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* Animations */
+    @keyframes heroReveal {
+      from { transform: scale(1.06); opacity: 0.6; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes curtainPulseBlue {
+      0%, 100% { opacity: 0.75; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes curtainPulseWarm {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes flameFlicker {
+      0%, 100% { transform: scaleY(1) scaleX(1); opacity: 1; }
+      40% { transform: scaleY(1.12) scaleX(0.92); opacity: 0.9; }
+      70% { transform: scaleY(0.94) scaleX(1.05); opacity: 1; }
+    }
+
+    @keyframes sconceGlow {
+      0%, 100% { opacity: 0.75; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes starDrift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-8px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <div class="hero-visual" aria-hidden="true">
+        <img src="house-current.jpg" alt="" />
+      </div>
+      <div class="hero-content">
+        <p class="brand">Deepavali <em>Light</em></p>
+        <h1>Warm the facade. Reveal the architecture. Keep the festive glow.</h1>
+        <p>Your house already has strong bones and great density of lights. The fix is color temperature, layering, and restraint — not more blue.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#compare">See the redesign</a>
+          <a class="btn btn-ghost" href="#kit">Shopping kit</a>
+        </div>
+      </div>
+    </header>
+
+    <section id="diagnosis" aria-labelledby="diag-title">
+      <p class="section-label">What’s working / what’s not</p>
+      <h2 class="section-title" id="diag-title">Blue washes the white walls into one flat glow.</h2>
+      <p class="section-lead">Dense curtain LEDs look spectacular from the street, but a single cool hue fights Diwali’s fire-and-gold tradition and hides the modern lines of your elevations.</p>
+
+      <div class="diagnosis">
+        <div>
+          <div class="photo-frame">
+            <img src="house-current.jpg" alt="Current Diwali lighting: dense blue LED curtains across a modern three-storey house" />
+          </div>
+          <p class="photo-caption">Current setup — cool blue curtain + two warm star sconces</p>
+        </div>
+        <div class="findings">
+          <article class="finding">
+            <h3>Keep the density</h3>
+            <p>The coverage on balconies and parapets already reads as “celebration.” You don’t need more strings — you need warmer ones and clearer edges.</p>
+          </article>
+          <article class="finding">
+            <h3>Rescue the architecture</h3>
+            <p>Trace roof and balcony lines with warm-white outline LEDs so the modern rectangles stay readable instead of dissolving into blue fog.</p>
+          </article>
+          <article class="finding">
+            <h3>Expand the warmth you already love</h3>
+            <p>Those star-burst wall lights and the porch glow are the most Diwali part of the photo. Repeat that amber language on every floor.</p>
+          </article>
+          <article class="finding">
+            <h3>Balance cool and warm</h3>
+            <p>If you keep any blue, confine it to one slim accent line — never as the full curtain. Festival light should feel like flame, not ice.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="compare" aria-labelledby="compare-title">
+      <div class="compare-head">
+        <div>
+          <p class="section-label">Interactive concept</p>
+          <h2 class="section-title" id="compare-title">Current blue vs warm redesign</h2>
+        </div>
+      </div>
+
+      <div class="stage" id="stage" data-mode="redesign">
+        <div class="facade" aria-hidden="true">
+          <svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#d8d2c4"/>
+                <stop offset="100%" stop-color="#b7b0a0"/>
+              </linearGradient>
+              <linearGradient id="warmGlow" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffd27a" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#ffd27a" stop-opacity="0"/>
+              </linearGradient>
+              <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="3.5" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="tinyGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="1.6" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+
+            <!-- Ground / wall -->
+            <rect x="0" y="340" width="300" height="80" fill="#12151c"/>
+            <rect x="18" y="350" width="70" height="50" fill="#1a1f2a"/>
+            <!-- Star sconces warm (always somewhat visible) -->
+            <g class="layer-accent-warm" filter="url(#tinyGlow)">
+              <g class="star-sconce" transform="translate(40 368)">
+                <circle r="3" fill="#ffcc66"/>
+                <path d="M0-10 L1.5-3 L8-3 L2.5 1 L4.5 8 L0 4 L-4.5 8 L-2.5 1 L-8-3 L-1.5-3 Z" fill="#e0b35a" opacity="0.85"/>
+              </g>
+              <g class="star-sconce" transform="translate(62 378)" style="animation-delay:0.4s">
+                <circle r="2.5" fill="#ffcc66"/>
+                <path d="M0-8 L1.2-2.4 L6.5-2.4 L2 0.8 L3.6 6.4 L0 3.2 L-3.6 6.4 L-2 0.8 L-6.5-2.4 L-1.2-2.4 Z" fill="#e0b35a" opacity="0.85"/>
+              </g>
+            </g>
+
+            <!-- Gate -->
+            <rect x="95" y="318" width="110" height="72" fill="#0d0f14" stroke="#2a303c" stroke-width="2"/>
+            <path d="M105 330 h20 M135 330 h20 M165 330 h20 M105 350 h20 M135 350 h20 M165 350 h20 M105 370 h20 M135 370 h20 M165 370 h20" stroke="#3a4252" stroke-width="1.5"/>
+
+            <!-- Main building mass -->
+            <rect x="70" y="70" width="170" height="250" fill="url(#wall)" stroke="#9a9488" stroke-width="1"/>
+            <!-- Side wing -->
+            <rect x="40" y="160" width="40" height="160" fill="#c5bfb1"/>
+            <!-- Mumty / top room -->
+            <rect x="185" y="28" width="55" height="55" fill="#cac3b4" stroke="#9a9488" stroke-width="1"/>
+
+            <!-- Windows -->
+            <rect x="90" y="95" width="36" height="42" fill="#1c2433"/>
+            <rect x="145" y="95" width="36" height="42" fill="#1c2433"/>
+            <rect x="200" y="95" width="24" height="42" fill="#1c2433"/>
+            <rect x="90" y="185" width="36" height="42" fill="#1c2433"/>
+            <rect x="145" y="185" width="36" height="42" fill="#2a2010"/>
+            <rect x="200" y="185" width="24" height="42" fill="#1c2433"/>
+            <rect x="90" y="265" width="50" height="38" fill="#2a2010"/>
+            <rect x="195" y="40" width="18" height="22" fill="#3a2a12"/>
+
+            <!-- Warm interior spill (redesign boosts) -->
+            <g class="layer-diya">
+              <rect x="145" y="185" width="36" height="42" fill="#ffb84a" opacity="0.35"/>
+              <rect x="90" y="265" width="50" height="38" fill="#ff9f3a" opacity="0.4"/>
+              <rect x="195" y="40" width="18" height="22" fill="#ffd27a" opacity="0.45"/>
+            </g>
+
+            <!-- Balcony rails -->
+            <rect x="78" y="148" width="154" height="6" fill="#e8e4dc"/>
+            <rect x="78" y="238" width="154" height="6" fill="#e8e4dc"/>
+            <path d="M85 148 v18 M100 148 v18 M115 148 v18 M130 148 v18 M145 148 v18 M160 148 v18 M175 148 v18 M190 148 v18 M205 148 v18 M220 148 v18" stroke="#ddd7cc" stroke-width="1.5"/>
+            <path d="M85 238 v18 M100 238 v18 M115 238 v18 M130 238 v18 M145 238 v18 M160 238 v18 M175 238 v18 M190 238 v18 M205 238 v18 M220 238 v18" stroke="#ddd7cc" stroke-width="1.5"/>
+
+            <!-- CURRENT: blue curtains + outlines -->
+            <g class="layer-blue" filter="url(#softGlow)">
+              <g class="curtain-blue">
+                <path d="M82 78 v68 M90 78 v68 M98 78 v68 M106 78 v68 M114 78 v68 M122 78 v68 M130 78 v68 M138 78 v68 M146 78 v68 M154 78 v68 M162 78 v68 M170 78 v68 M178 78 v68 M186 78 v68 M194 78 v68 M202 78 v68 M210 78 v68 M218 78 v68 M226 78 v68" stroke="#3d7bff" stroke-width="1.4" opacity="0.9"/>
+                <path d="M82 168 v68 M90 168 v68 M98 168 v68 M106 168 v68 M114 168 v68 M122 168 v68 M130 168 v68 M138 168 v68 M146 168 v68 M154 168 v68 M162 168 v68 M170 168 v68 M178 168 v68 M186 168 v68 M194 168 v68 M202 168 v68 M210 168 v68 M218 168 v68 M226 168 v68" stroke="#4d8aff" stroke-width="1.4" opacity="0.85"/>
+              </g>
+              <rect x="74" y="72" width="162" height="3" fill="#5a95ff"/>
+              <rect x="74" y="152" width="162" height="3" fill="#5a95ff"/>
+              <rect x="74" y="242" width="162" height="3" fill="#5a95ff"/>
+            </g>
+
+            <!-- REDESIGN: warm outline + sparse warm curtains + roof accent -->
+            <g class="glow-warm">
+              <ellipse cx="155" cy="200" rx="120" ry="160" fill="url(#warmGlow)"/>
+            </g>
+
+            <g class="layer-warm" filter="url(#softGlow)">
+              <!-- Architectural tracing -->
+              <rect x="70" y="70" width="170" height="3" fill="#fff1cf"/>
+              <rect x="70" y="148" width="170" height="2.5" fill="#e0b35a"/>
+              <rect x="70" y="238" width="170" height="2.5" fill="#e0b35a"/>
+              <rect x="70" y="317" width="170" height="3" fill="#fff1cf"/>
+              <rect x="70" y="70" width="3" height="250" fill="#ffe7b0"/>
+              <rect x="237" y="70" width="3" height="250" fill="#ffe7b0"/>
+              <!-- Mumty warm outline -->
+              <rect x="185" y="28" width="55" height="2.5" fill="#fff1cf"/>
+              <rect x="185" y="28" width="2.5" height="55" fill="#e0b35a"/>
+              <rect x="237.5" y="28" width="2.5" height="55" fill="#e0b35a"/>
+              <!-- Sparse warm curtain (half density) -->
+              <g class="curtain-warm">
+                <path d="M86 78 v66 M102 78 v66 M118 78 v66 M134 78 v66 M150 78 v66 M166 78 v66 M182 78 v66 M198 78 v66 M214 78 v66" stroke="#f0c56a" stroke-width="1.5" opacity="0.85"/>
+                <path d="M94 168 v66 M110 168 v66 M126 168 v66 M142 168 v66 M158 168 v66 M174 168 v66 M190 168 v66 M206 168 v66 M222 168 v66" stroke="#e0b35a" stroke-width="1.5" opacity="0.8"/>
+              </g>
+              <!-- Porch toran / diya row -->
+              <g class="layer-diya" filter="url(#tinyGlow)">
+                <g transform="translate(120 312)">
+                  <ellipse class="diya-flame" cx="0" cy="-6" rx="2.2" ry="4" fill="#ffcf6b"/>
+                  <ellipse cx="0" cy="0" rx="5" ry="2" fill="#c97a2a"/>
+                </g>
+                <g transform="translate(140 312)">
+                  <ellipse class="diya-flame" cx="0" cy="-6" rx="2.2" ry="4" fill="#ffd88a" style="animation-delay:0.2s"/>
+                  <ellipse cx="0" cy="0" rx="5" ry="2" fill="#c97a2a"/>
+                </g>
+                <g transform="translate(160 312)">
+                  <ellipse class="diya-flame" cx="0" cy="-7" rx="2.4" ry="4.5" fill="#ffe7a8" style="animation-delay:0.45s"/>
+                  <ellipse cx="0" cy="0" rx="5.5" ry="2.2" fill="#c97a2a"/>
+                </g>
+                <g transform="translate(180 312)">
+                  <ellipse class="diya-flame" cx="0" cy="-6" rx="2.2" ry="4" fill="#ffcf6b" style="animation-delay:0.1s"/>
+                  <ellipse cx="0" cy="0" rx="5" ry="2" fill="#c97a2a"/>
+                </g>
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="mode-toggle" role="group" aria-label="Lighting mode">
+        <button type="button" class="mode-btn" data-mode="current" id="mode-current">Current blue</button>
+        <button type="button" class="mode-btn is-active" data-mode="redesign" id="mode-redesign">Warm redesign</button>
+      </div>
+      <p class="mode-note" id="mode-note">Warm-white outlines trace every rectangle. Curtains shift to amber-gold at half density. Diyas and star sconces carry the festival warmth at ground level.</p>
+    </section>
+
+    <section id="zones" aria-labelledby="zones-title">
+      <p class="section-label">Zone plan</p>
+      <h2 class="section-title" id="zones-title">Five layers, one composition</h2>
+      <p class="section-lead">Treat the elevation like a stage set: outline first, then soft fill, then fire at human eye level.</p>
+
+      <div class="zones">
+        <article class="zone">
+          <div class="zone-num">01</div>
+          <div>
+            <h3>Roofline &amp; mumty</h3>
+            <p>Continuous warm-white LED strip (2700–3000K) along the top parapet and the small roof room. This becomes the bright “crown” against the night sky.</p>
+          </div>
+          <div class="zone-tag">Warm white outline</div>
+        </article>
+        <article class="zone">
+          <div class="zone-num">02</div>
+          <div>
+            <h3>Balcony edges</h3>
+            <p>Replace blue border runs with amber/gold rope light on both balcony fronts. Keep vertical drops, but use warm fairy lights at roughly half the current density so walls stay visible.</p>
+          </div>
+          <div class="zone-tag">Amber trace + soft curtain</div>
+        </article>
+        <article class="zone">
+          <div class="zone-num">03</div>
+          <div>
+            <h3>Boundary wall &amp; sconces</h3>
+            <p>Keep both star-burst fixtures — they’re the best moment in the photo. Add one more warm uplight near the gate pier so the left wall doesn’t go dark.</p>
+          </div>
+          <div class="zone-tag">Keep &amp; extend</div>
+        </article>
+        <article class="zone">
+          <div class="zone-num">04</div>
+          <div>
+            <h3>Gate &amp; porch</h3>
+            <p>Line the porch lintel with a marigold/amber toran light. Place a short row of real or LED diyas just inside the gate — festival read happens at eye level for people walking past.</p>
+          </div>
+          <div class="zone-tag">Fire &amp; flower light</div>
+        </article>
+        <article class="zone">
+          <div class="zone-num">05</div>
+          <div>
+            <h3>Interior spill</h3>
+            <p>Leave a few rooms lit warm behind sheer curtains. That soft window glow (already visible on the middle floor) breaks the “all exterior LEDs” look and feels lived-in.</p>
+          </div>
+          <div class="zone-tag">Lived-in warmth</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="palette" aria-labelledby="palette-title">
+      <p class="section-label">Color temperature</p>
+      <h2 class="section-title" id="palette-title">A Diwali palette for white walls</h2>
+      <p class="section-lead">Aim for roughly 70% warm white / amber, 20% marigold accent, 10% optional cool accent — never reverse that ratio.</p>
+
+      <div class="palette">
+        <div class="swatch">
+          <div class="swatch-chip" style="background:#fff1cf"></div>
+          <h4>Warm white</h4>
+          <p>2700–3000K outlines</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch-chip" style="background:#e0b35a"></div>
+          <h4>Temple gold</h4>
+          <p>Balcony borders &amp; curtains</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch-chip" style="background:#c97a2a"></div>
+          <h4>Amber flame</h4>
+          <p>Diyas, toran, sconces</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch-chip" style="background:#f0a03a"></div>
+          <h4>Marigold</h4>
+          <p>Festive accent pops</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch-chip" style="background:#1a4cff"></div>
+          <h4>Electric blue</h4>
+          <p>Retire as main fill</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="kit" aria-labelledby="kit-title">
+      <p class="section-label">What to buy</p>
+      <h2 class="section-title" id="kit-title">Shopping kit for this facade</h2>
+      <p class="section-lead">Sized for a three-storey modern house with two balcony runs and a mumty. Prefer IP65 outdoor-rated strings with spare connectors.</p>
+
+      <div class="kit">
+        <div class="kit-row">
+          <h3>Warm-white LED strip / rope</h3>
+          <p>2700–3000K, outdoor, for roof, vertical corners, and mumty outline. Trace geometry first before hanging curtains.</p>
+          <div class="kit-qty">~40–50 m</div>
+        </div>
+        <div class="kit-row">
+          <h3>Amber / gold fairy lights</h3>
+          <p>Replace blue balcony curtains. Use wider spacing between vertical drops so white plaster still reads.</p>
+          <div class="kit-qty">~8–12 nets</div>
+        </div>
+        <div class="kit-row">
+          <h3>Amber rope light</h3>
+          <p>Dedicated runs for both balcony front edges — denser and brighter than the fairy fills.</p>
+          <div class="kit-qty">~20–24 m</div>
+        </div>
+        <div class="kit-row">
+          <h3>LED diyas / tealights</h3>
+          <p>Cluster inside the gate line and along the porch. Real diyas for the evening aarti; LEDs for all-night safety.</p>
+          <div class="kit-qty">24–36 pcs</div>
+        </div>
+        <div class="kit-row">
+          <h3>Lighted toran</h3>
+          <p>Warm marigold or gold lighted doorway garland for the porch lintel — matches the glow already peeking through the gate.</p>
+          <div class="kit-qty">1</div>
+        </div>
+        <div class="kit-row">
+          <h3>Extra warm wall sconce / uplight</h3>
+          <p>Match the existing star-burst pair on the left wall; add one near the right gate pier for balance.</p>
+          <div class="kit-qty">1–2</div>
+        </div>
+        <div class="kit-row">
+          <h3>Optional: smart controller</h3>
+          <p>If you want gentle pulse or sequential warm chase, a simple Wi-Fi LED controller on the outline circuit is enough — skip RGB rainbow modes.</p>
+          <div class="kit-qty">1</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sequence" aria-labelledby="seq-title">
+      <p class="section-label">Install order</p>
+      <h2 class="section-title" id="seq-title">Do it in one afternoon</h2>
+      <div class="steps">
+        <article class="step">
+          <h3>Strip the blue</h3>
+          <p>Take down balcony curtain strings and blue border runs. Keep clips and power points — reuse the mounting map.</p>
+        </article>
+        <article class="step">
+          <h3>Trace the geometry</h3>
+          <p>Install warm-white outline on roof, mumty, vertical corners, and balcony lips. Turn them on before adding fill so you can judge the silhouette.</p>
+        </article>
+        <article class="step">
+          <h3>Hang warm curtains</h3>
+          <p>Half the previous density. Align drops with railing posts for a calmer rhythm. Prefer steady-on or slow twinkle only.</p>
+        </article>
+        <article class="step">
+          <h3>Ground-level festival</h3>
+          <p>Star sconces, toran, diya row, and porch spill. This is what guests feel when they arrive — make it the warmest zone.</p>
+        </article>
+        <article class="step">
+          <h3>Tune from the street</h3>
+          <p>Stand across the road at night. If any floor still looks icy or over-bright, kill one curtain segment before adding more light.</p>
+        </article>
+        <article class="step">
+          <h3>Safety pass</h3>
+          <p>Outdoor-rated adapters only, drip loops at every socket, no daisy-chaining past manufacturer limits, and a single switch for the whole elevation.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Redesign concept from your current facade photo · Target look: <strong>temple gold on modern lines</strong>
+  </footer>
+
+  <script>
+    (function () {
+      var stage = document.getElementById("stage");
+      var note = document.getElementById("mode-note");
+      var buttons = document.querySelectorAll(".mode-btn");
+
+      var copy = {
+        current: "Dense electric-blue curtains dominate. Architecture flattens; only the star sconces and a hint of porch warmth feel like Diwali.",
+        redesign: "Warm-white outlines trace every rectangle. Curtains shift to amber-gold at half density. Diyas and star sconces carry the festival warmth at ground level."
+      };
+
+      function setMode(mode) {
+        if (!stage || !note) return;
+        stage.setAttribute("data-mode", mode);
+        buttons.forEach(function (btn) {
+          btn.classList.toggle("is-active", btn.getAttribute("data-mode") === mode);
+        });
+        note.style.opacity = "0";
+        window.setTimeout(function () {
+          note.textContent = copy[mode];
+          note.style.opacity = "1";
+        }, 180);
+      }
+
+      window.__setLightingMode = setMode;
+      buttons.forEach(function (btn) {
+        btn.addEventListener("click", function (event) {
+          event.preventDefault();
+          setMode(btn.getAttribute("data-mode"));
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
